@@ -24,7 +24,7 @@ _Note: this extension doesn't work on OwnCloud but you can fork this repo and mo
 * it can not search in bookmarks' description (API lacks the method)
 * it can not retrieve the list of already set tags (API lacks the method)
 * it can not edit a bookmark
-* it lacs a translation (localization) system
+* it lacks a translation (localization) system
 * it lacks translations
 
 ## Disclaimer
@@ -98,9 +98,12 @@ Then:
 
 Anyway, no worries, this is a **temporary thing**. I'm sending PRs hoping that they will be accepted and, in any case, I will change my extension code in order to work with the official Bookmarks app. Once things will sattle down, you will be able to use the discard my Bookmarks repo and use the official app package.
 
-### Client side
+### Client side (browser)
 
-On your pc, followe these step:
+Update @2017-01-14: I submitted this extension both on [Mozilla Webstore](https://addons.mozilla.org/en-US/firefox/addon/freedommarks/) and [Chrome Webstore](https://chrome.google.com/webstore/category/extensions) and I'm waiting for them to be approved. Meanwhile you need to follow the procedure written below.
+
+
+On your pc, follow these step:
 
 * clone this extension repository:
 
