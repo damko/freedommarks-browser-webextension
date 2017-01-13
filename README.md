@@ -1,6 +1,6 @@
-#Chrome extension for NextCloud Bookmarks
+#Browser extension for NextCloud Bookmarks
 
-This is a cross-browser Extension for [NextCloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for NextCloud. 
+This is a cross-browser extension for [NextCloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for NextCloud. 
 
 It allows you to add, search and delete your NextCloud Bookmarks. 
 
