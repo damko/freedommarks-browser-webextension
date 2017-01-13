@@ -19,10 +19,10 @@ _Note: this extension doesn't work on OwnCloud but you can fork this repo and mo
 
 ## Missing features
 
-* it can not search a bookmark starting from a URL (API lacks the method)
+* it can not search for a bookmark starting from a URL (API lacks the method)
 * it can not search in bookmarks' title (API lacks the method)
 * it can not search in bookmarks' description (API lacks the method)
-* it can not retrieve the list of already used bookmarks (API lacks the method)
+* it can not retrieve the list of already set tags (API lacks the method)
 * it can not edit a bookmark
 * it lacs a translation (localization) system
 * it lacks translations
