@@ -1,0 +1,41 @@
+{
+  "name": "FreedomMarks",
+  "version": "0.0.2",
+  "manifest_version": 2,
+  "description": "Browser extension for Nextcloud Bookmarks",
+  "homepage_url": "https://github.com/damko/freedommarks-browser-webextension",
+
+  "options_ui": {
+    "page": "FreedomMarks_options.html"
+  },
+
+  "background": {
+      "scripts": ["js/background.js"]
+  },
+
+  "icons": {
+    "32": "icons/FreedomMarks_32x32.png",
+    "48": "icons/FreedomMarks_48x48.png",
+    "96": "icons/FreedomMarks_96x96.png"
+  },
+
+  "browser_action": {
+    "default_icon": "icons/FreedomMarks_48x48.png",
+    "default_title": "FreedomMarks",
+    "default_popup": "FreedomMarks.html"
+  },
+
+  "applications": {
+    "gecko": {
+      "id": "freedommarks.extension@venturin.net",
+      "strict_min_version": "48.0"
+    }
+  },
+
+  "permissions": [
+    "tabs",
+    "activeTab",
+    "storage",
+    "https://*/*"
+  ]
+}

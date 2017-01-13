@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <link href="css/third-party/bootstrap.min.css" rel="stylesheet">
+    <link href="css/third-party/jquery-ui.min.css" rel="stylesheet">
+    <link href="css/FreedomMarks.css" rel="stylesheet">
+    <link href="css/FreedomMarks_settings.css" rel="stylesheet">
+  </head>
+
+  <body class="settings">
+    <form id="freedommarks_settings_form">
+
+      <div class="input-group">
+          <div class="input-group-addon" id="label_server_url">Server URL</div>
+          <input type="text" class="form-control" id="server_url" aria-describedby="label_server_url">
+      </div>
+
+      <div class="input-group">
+          <div class="input-group-addon" id="label_username">Username</div>
+          <input type="text" class="form-control" id="username" aria-describedby="label_username">
+      </div>
+
+      <div class="input-group">
+          <div class="input-group-addon" id="label_password">Password</div>
+          <input type="password" class="form-control" id="password" aria-describedby="label_password">
+      </div>
+
+      <div class="btn-group">
+          <button type="button" class="btn btn-primary" id="saveFreedomMarksSettings">Save</button>
+      </div>
+      
+    </form>
+    
+    <div class="boxed" id="settings_notification_area"></div>
+
+    <script src="js/third-party/chrome-promise.js"></script>
+    <script src="js/options.js"></script>
+    
+  </body>
+</html>

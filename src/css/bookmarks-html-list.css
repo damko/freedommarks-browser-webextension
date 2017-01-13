@@ -1,0 +1,104 @@
+/* BOOKMARKS LIST */
+span.subtitle{
+    font-size: 10px;
+    padding-left: 10px;
+}
+
+ul.bookmarks-list{
+    list-style: none;
+    margin: 0;
+    margin-left: 10px;
+    padding: 0;
+}
+
+ul.bookmarks-list > li {
+    min-height: 30px;
+    max-height: 150px;
+    width: 100%;
+
+    padding: 0;
+    padding-bottom: 10px;
+
+    margin:0;
+    margin-top: 10px;
+
+    border: 0;
+    border-bottom: 1px solid #ccc;
+}
+
+ul.tags-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    /* float: right; */
+    clear: left;
+}
+
+ul.tags-list > li {
+    display: inline-block;
+    font-size: 11px;
+    color: white;
+    /* same background color as other buttons */
+    /*background-color: #337ab7;
+    border-color: #2e6da4;*/
+    margin-right: 5px;
+}
+
+#delete-bookmark-button {
+    display: none;
+}
+/*            #last-bookmarks-list > li:nth-child(even) {
+    background: gray;
+}*/
+/* /BOOKMARKS LIST */
+
+
+
+
+
+
+/* BOOKMARKS LIST  ITEM*/
+div.right {
+    float: right;
+}
+
+div.bookmark-title {
+    font-size: 12px;
+    color: #aaa;
+
+    /*truncate*/
+    width: 370px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.bookmark-title > a {
+
+    font-size: 18px;
+    text-decoration: none;
+}
+
+div.bookmark-url {
+    margin: 0;
+    padding: 0;
+    font-size: 9px;
+    color: #888;
+
+    /* truncate */
+    width: 370px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+div.bookmark-description {
+    margin: 0;
+    margin-bottom: 5px;
+    padding: 0;
+    padding-top: 5px;
+    font-size: 12px;
+    /*font-style: italic;*/
+    color: #444;
+}
+/* /BOOKMARKS LIST  ITEM*/

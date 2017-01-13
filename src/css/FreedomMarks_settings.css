@@ -1,0 +1,38 @@
+/*CSS specific for the settings form*/
+
+body.settings {
+    background-color: transparent;
+    min-height: 210px;
+    min-width: 450px;
+}
+
+#freedommarks_settings_form {
+    margin: 5px;
+}
+
+div.input-group {
+	width: 100%;
+}
+
+div.input-group-addon {
+	width: 110px;
+	text-align: left;
+}
+
+#settings_notification_area {
+    display: none;
+    width: 98%;
+    margin: 0;
+    margin-left: 5px;
+    margin-top: 10px;
+    padding: 0;
+    padding-top: 5px;
+    padding-bottom: 5px;
+	font-size: 15px;
+	text-align: center;
+}
+
+.success {
+	color: white;
+	background-color: green;
+}

@@ -1,0 +1,160 @@
+/* GENERIC */
+body {
+    font-family: sans-serif;
+    font-size: 100%;
+    background-color: #eee;
+}
+
+.boxed {
+    padding: 5px;
+    -moz-border-radius: 5px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+}
+
+div.boxed {
+    margin-bottom: 10px;
+    width: 100%;
+}
+
+div.clear {
+    clear: both;
+}
+
+div.input-group {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+span.input-group-addon {
+    min-width: 70px;
+    vertical-align: top;
+    text-align: left;
+}
+
+#bottom-line {
+    margin: 0;
+    margin-right: 3px;
+    padding: 10px;
+    text-align: right;
+}
+
+#bottom-line > a {
+    font-size: 15px;
+    text-decoration: none;
+}
+
+/* /GENERIC */
+
+
+
+
+/* TABS */
+#freedommark-tabs {
+    margin-top: 10px;
+}
+
+.nav-tabs>li {
+    line-height: 10px;
+}
+
+.nav-tabs>li>a {
+    font-size: 16px;
+    font-weight: bold;
+}
+
+div.tab-content {
+    width: 400px;
+}
+
+div.tab-content, div.tab-pane {
+    margin: 0;
+    padding: 5px;
+    background-color: white;
+}
+
+/* /TABS */
+
+/* BOOKMARK FORM */
+#additional-info-box {
+    width: 100%;
+    height: 30px !important;
+    margin:0;
+    margin-bottom: 10px;
+    padding: 5px;
+
+}
+
+#notification-area {
+    display: none;
+    margin: 0;
+    margin-top: 2px;
+    padding: 0;
+}
+
+#delete-bookmark {
+    display: none;
+}
+
+#bookmark-additional-info {
+    display: none;
+}
+
+ul.bookmark-additional-info {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    padding-bottom: 10px;
+    text-align: left;
+    width: 370px;
+}
+
+
+ul.bookmark-additional-info > li{
+    margin: 0;
+    margin-right: 10px;
+    padding: 0;
+    display: inline-block;
+}
+/* /BOOKMARK FORM */
+
+
+
+
+/* NOTIFICATION AREA */
+#notification-area {
+    width: 100%;
+    margin: 0;
+    padding: 5px;
+    display: none;
+}
+
+p.notify, p.alarm {
+    padding: 5px;
+    color: white;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+    -webkit-border-radius: 3px;
+    -moz-border-radius: 3px;
+    border-radius: 3px;
+    border: 1px solid #ccc;
+}
+
+p.notify {
+    background-color: #4cae4c;
+}
+
+p.alarm {
+    background-color: #d43f3a;
+}
+/* /NOTIFICATION AREA */
+
+
+
+/*.ui-autocomplete-loading {
+    background: white url("images/ui-anim_basic_16x16.gif") right center no-repeat;
+    background-color: orange;
+}
+*/
