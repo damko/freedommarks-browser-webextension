@@ -109,7 +109,7 @@ On your pc, follow these step:
 
 * clone this extension repository:
 
-	git clone git@github.com:damko/nextcloud_bookmarks_chrome.git
+	git clone git@github.com:damko/freedommarks-browser-webextension.git
 
 * open Firefox and paste this `about:debugging` in the URL bar
 
