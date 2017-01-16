@@ -100,7 +100,9 @@ Anyway, no worries, this is a **temporary thing**. I'm sending PRs hoping that t
 
 ### Client side (browser)
 
-Update @2017-01-14: I submitted this extension both on [Mozilla Webstore](https://addons.mozilla.org/en-US/firefox/addon/freedommarks/) and [Chrome Webstore](https://chrome.google.com/webstore/category/extensions) and I'm waiting for them to be approved. Meanwhile you need to follow the procedure written below.
+Update @2017-01-16: The extension is now published at the Chrome Webstore. You can install it from [here](https://chrome.google.com/webstore/detail/freedommarks/gmmpjoepfelkmeedfkfkadgkhholibko)
+
+Update @2017-01-14: I submitted this extension both on [Mozilla Webstore](https://addons.mozilla.org/en-US/firefox/addon/freedommarks/) and I'm waiting for it to be approved. Meanwhile, if you are on Firefox, you need to follow the procedure written below.
 
 
 On your pc, follow these step:
@@ -109,17 +111,15 @@ On your pc, follow these step:
 
 	git clone git@github.com:damko/nextcloud_bookmarks_chrome.git
 
-* open Chrome and paste this `chrome://extensions/` in the URL bar
+* open Firefox and paste this `about:debugging` in the URL bar
 
-* click on the `Developer mode` checkbox if it's not yet checked
-
-* click on `Load unpacked extension` and select the `nextcloud_bookmarks_chrome/src/` directory
+* click on the `Load Temporary Add-on` button and select the `nextcloud_bookmarks_chrome/src/manifest.json` file
 
 * click `Open`
 
-The Nextcloud-Bookmarks extension will then appear among the other installed Chrome extensions.
+* paste this `about:addons` in the URL bar and you will see the FreedomMark extension listed among the others
 
-Now click on Nextcloud-Bookmarks `Options` link and fill in the form with:
+* click on the button `Preferences` on the right of FreedomMarks and fill in the form with:
 
 * URL of your NextCloud server
 * NextCloud username
