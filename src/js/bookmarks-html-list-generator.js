@@ -1,5 +1,5 @@
-/* @damko 
- * I'm not using Jquery here because it looks neater to me like this 
+/* @damko
+ * I'm not using Jquery here because it looks neater to me like this
  */
 function makeBookmarksList(bookmarks, div_id){
 
@@ -87,7 +87,7 @@ function makeBookmarksList(bookmarks, div_id){
             div.className = "btn-group btn-group-xs right";
             div.appendChild(delete_button);
             li.appendChild(div);
- 
+
             var div = document.createElement("div");
             div.className = "clear";
             li.appendChild(div);
