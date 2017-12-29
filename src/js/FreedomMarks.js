@@ -3,14 +3,18 @@ debug = true;
 jQuery.support.cors = true;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-    
+
     if(debug) console.log("DOM fully loaded and parsed");
 
-    browser = getBrowser();
+    var sUsrAg = navigator.userAgent;
+
+    if(typeof sUsrAg.indexOf !== 'undefined' && sUsrAg.indexOf("Chrome") > -1) {
+        browser = new ChromePromise();
+    }
 
     // retrieves settings from local storage
     browser.storage.local.get('freedommarks_settings').then(function(result) {
-        
+
         var settings = result.freedommarks_settings;
 
         if(!settings.server_url) {
@@ -27,13 +31,13 @@ document.addEventListener("DOMContentLoaded", function(event) {
     // TODO
     // I want to search for the URL in the database before filling in the form
     // but Nextcloud Bookmarks API does not supports this kind of query yet
-    // 
+    //
     // CurrentBrowserTab(searchForCurrentUrl);
-    // 
+    //
     // Therefore, for now, I replace it with this
     CurrentBrowserTab(fillForm);
 
-    // when a tab-pane gets activated ... 
+    // when a tab-pane gets activated ...
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
 
         // closes the notification area
@@ -43,25 +47,34 @@ document.addEventListener("DOMContentLoaded", function(event) {
         e.preventDefault();
         var target = $(e.target).attr("href"); // activated tab's ID
         if (target == '#search-bookmarks-tab') {
-            if(debug) console.log('second tab activated');
-            $('#search-tags').focus();
+            if(debug) console.log('second tab has been activated');
+            $('#search-terms').focus();
         }
     });
 
 
-    //Searches for tags when the user hits enter and the search-bookmarks-tab input field has focus
+    //Searches for tags when the user hits enter and one the search-bookmarks-tab input fields has focus
     $('#search-tags').keypress(function (e) {
         var key = e.which;
         // the enter key code
         if(key == 13) {
-            searchByTags();
+            searchByTermsOrTags();
             e.preventDefault();
             $('#search-bookmarks-tab').show();
         }
-    });   
+    });
+    $('#search-terms').keypress(function (e) {
+        var key = e.which;
+        // the enter key code
+        if(key == 13) {
+            searchByTermsOrTags();
+            e.preventDefault();
+            $('#search-bookmarks-tab').show();
+        }
+    });
 
     $('#search-by-tags-button').click(function (e) {
-        searchByTags();
+        searchByTermsOrTags();
     });
 
     $('#save-bookmark-button').click(function (e) {
@@ -74,14 +87,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
 });
 
 
+// function getBrowser(){
 
-function getBrowser(){
+//     if(debug) console.log(navigator);
 
-    var sBrowser, sUsrAg = navigator.userAgent;
-
-    if(sUsrAg.indexOf("Chrome") > -1) {
-        return browser = new ChromePromise();
-    }
+    //var sBrowser, sUsrAg = navigator.userAgent;
 
     //  else if (sUsrAg.indexOf("Safari") > -1) {
     //     sBrowser = "Apple Safari";
@@ -93,17 +103,22 @@ function getBrowser(){
     //     sBrowser = "Microsoft Internet Explorer";
     // }
 
-    return browser;
-}
+    //return browser;
+// }
 
 
 
 function testCorsEnabled(url){
+    if(debug) console.log('function: ' + arguments.callee.name);
+
     $.get( url, function( data, textStatus, request) {
         var header = request.getResponseHeader('access-control-allow-origin');
 
         if(typeof header !== 'undefined') {
              console.log('CORS is not enabled for url: ' + url);
+        } else {
+            console.log('CORS is enabled for url: ' + url);
+            console.log(header);
         }
     });
 }
@@ -117,10 +132,12 @@ function getTagsArrayFromElement(element_id){
             tags.push(trimmed_tag);
         }
     }
+    tags.push(" ");
     return tags;
 }
 
 function CurrentBrowserTab(callback) {
+    if(debug) console.log('function: ' + arguments.callee.name);
     var queryInfo = {
         active: true,
         currentWindow: true
@@ -137,6 +154,7 @@ function CurrentBrowserTab(callback) {
 }
 
 function fillForm(browserTab){
+    if(debug) console.log('function: ' + arguments.callee.name);
     // This fills in the hidden form field "bookmark-url" with tab's URL
     document.getElementById("bookmark-url").value = browserTab.url;
     //This ifills in the bookmark title with the page title of the current tab
@@ -145,21 +163,26 @@ function fillForm(browserTab){
 
 function saveBookmark(){
 
-    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v1/bookmark';
-    var tags = $('#bookmark-tags').val().split(',')
+    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark';
+
+    if(debug) console.log('endpoint: ' + endpoint);
+
+    //trim and replace trailing slash
+    var bookmarkurl = $('#bookmark-url').val().trim().replace(/\/$/, "");
+    if(debug) console.log('bookmarkurl: ' + bookmarkurl);
 
     $.ajax({
         url: endpoint,
         method: "POST",
-        // Uncomment this when you remeove @Public from controller
-        // beforeSend: function (xhr) {
-        //     xhr.setRequestHeader('Authorization', 'Basic ' + btoa(result.username + ':' + result.password));
-        // },
+        //basic authentication
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+        },
         data: {
-            url: $('#bookmark-url').val(),
+            url: bookmarkurl,
             title: $('#bookmark-title').val(),
             description: $('#bookmark-description').val(),
-            tags: getTagsArrayFromElement('bookmark-tags'),
+            item: getTagsArrayFromElement('bookmark-tags'),
             is_public: true
         },
         dataType: 'json',
@@ -178,55 +201,72 @@ function saveBookmark(){
 
 }
 
-function searchByTags(){
+function searchByTermsOrTags(){
 
+    if(debug) console.log('function: ' + arguments.callee.name);
     if(debug) console.log('server_url: ' + server_url);
     if(debug) console.log('username: ' + username);
     if(debug) console.log('password: ' + password);
 
-    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v1/bookmark';
+    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark';
+
+    var terms = getTagsArrayFromElement('search-terms');
     var tags = getTagsArrayFromElement('search-tags');
     var conjunction = $("input[name='conjunction']:checked"). val();
 
-    searchBookmarks(endpoint, tags, conjunction);
+    searchBookmarks(endpoint, terms, tags, conjunction);
 }
 
 
-function searchBookmarks(endpoint, tags, conjunction){
+function searchBookmarks(endpoint, terms, tags, conjunction){
 
+    if(debug) console.log('function: ' + arguments.callee.name);
     if(debug) testCorsEnabled(endpoint);
 
-    var select = ['id','url','title','tags', 'description'];
-
+    var select = ['id','url','title','tags', 'description', 'lastmodified'];
+    if(terms.length == 0) {
+        var terms = "";
+    }
     $.ajax({
         url: endpoint,
         method: "GET",
-        // This is not necessary because it's @PublicPage
-        // beforeSend: function (xhr) {
-        //     xhr.setRequestHeader('Authorization', 'Basic ' + btoa(user + ':' + password));
-        // },
+        //basic authentication
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+        },
         data: {
-            user: username,
-            password: password,
-            select: select,
+            search: terms,
             tags: tags,
-            conjunction: conjunction
+            conjunction: conjunction,
+            page: -1
         },
         dataType: 'json',
     })
     .success(function(result){
+
+        if(debug) console.log('success');
+        if(debug) console.log(result);
+
         if(result.status == 'error'){
-            addNotification('error',result.message);
+            addNotification('Server Error',result.message);
         } else {
-            var bookmarks = result;
+            var bookmarks = result.data;
+            if(debug) console.log(bookmarks);
             makeBookmarksList(bookmarks, 'bookmarks-list');
-        }   
+        }
     })
     .error(function(XMLHttpRequest, status, errorThrown){
-        console.log('ajax error');
         if(debug) {
+            console.log('ajax error');
             console.log("Status: " + status);
             console.log("Error: " + errorThrown);
+        }
+    })
+    .complete(function(jqXHR, textStatus){
+        if(debug) {
+            console.log('ajax completed');
+            console.log(jqXHR);
+            console.log(textStatus);
         }
     });
 }
@@ -234,8 +274,10 @@ function searchBookmarks(endpoint, tags, conjunction){
 
 function deleteBookmark(e, bookmarkId){
 
+    if(debug) console.log('function: ' + arguments.callee.name);
+
     if(!bookmarkId && $('#bookmark-id').val().length == 0) {
-        console.log('no bookmark id found');
+        if(debug) console.log('no bookmark id found');
         return false;
     }
 
@@ -252,23 +294,21 @@ function deleteBookmark(e, bookmarkId){
         return false;
     }
 
-    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v1/bookmark/' + bookmarkId;
+    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark/' + bookmarkId;
 
     $.ajax({
         method: "DELETE",
         url: endpoint,
+        //basic authentication
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+        },
         data: {
             id: bookmarkId
         },
         dataType: 'json'
     })
     .success(function(result){
-        /* TODO these don't work
-        $('#bookmark-id').empty();
-        $('#bookmark-tags').empty();
-        $('#bookmark-description').empty();
-        $('#bookmark-additional-info').hide();
-        */
         $('#bookmark-' + bookmarkId).hide(); //this hides the deleted bookmark from the bookmark list
         CurrentBrowserTab(fillForm);
         $('#delete-bookmark-button').hide();
@@ -281,8 +321,10 @@ function deleteBookmark(e, bookmarkId){
 }
 
 function addNotification(type,message){
+    if(debug) console.log('function: ' + arguments.callee.name);
+
     var div = document.getElementById('notification-area');
-    div.innerHTML = "";
+    //div.innerHTML = "";
 
     var p = document.createElement("p");
     p.textContent = message;

@@ -1,53 +1,44 @@
 /* BOOKMARKS LIST */
+h3.subtitle{
+    padding: 0;
+    margin: 0;
+    margin-top: 20px;
+    width: 95%;
+    /* background: yellow; */
+}
+
 span.subtitle{
     font-size: 10px;
     padding-left: 10px;
 }
 
+div#bookmarks-list{
+    margin: 0;
+    padding: 0;
+    /* background: green; */
+}
+
 ul.bookmarks-list{
     list-style: none;
     margin: 0;
-    margin-left: 10px;
     padding: 0;
+    width: 95%;
 }
 
 ul.bookmarks-list > li {
-    min-height: 30px;
-    max-height: 150px;
-    width: 100%;
-
+    min-height: 80px;
+    max-height: 170px;
     padding: 0;
     padding-bottom: 10px;
-
     margin:0;
     margin-top: 10px;
-
     border: 0;
     border-bottom: 1px solid #ccc;
 }
 
-ul.tags-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    /* float: right; */
-    clear: left;
-}
 
-ul.tags-list > li {
-    display: inline-block;
-    font-size: 11px;
-    color: white;
-    /* same background color as other buttons */
-    /*background-color: #337ab7;
-    border-color: #2e6da4;*/
-    margin-right: 5px;
-}
-
-#delete-bookmark-button {
-    display: none;
-}
-/*            #last-bookmarks-list > li:nth-child(even) {
+/*            
+#last-bookmarks-list > li:nth-child(even) {
     background: gray;
 }*/
 /* /BOOKMARKS LIST */
@@ -60,14 +51,15 @@ ul.tags-list > li {
 /* BOOKMARKS LIST  ITEM*/
 div.right {
     float: right;
+    clear:  left;
 }
 
 div.bookmark-title {
-    font-size: 12px;
+    font-size: 11px;
     color: #aaa;
 
     /*truncate*/
-    width: 370px;
+    /*width: 350px;*/
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -86,13 +78,14 @@ div.bookmark-url {
     color: #888;
 
     /* truncate */
-    width: 370px;
+    /*width: 370px;*/
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
 
 div.bookmark-description {
+    max-height: 40px;
     margin: 0;
     margin-bottom: 5px;
     padding: 0;
@@ -100,5 +93,44 @@ div.bookmark-description {
     font-size: 12px;
     /*font-style: italic;*/
     color: #444;
+    /* white-space: nowrap; */
+    overflow: hidden;
+    text-overflow: ellipsis;
 }
+
+div.bookmark-lastmodified {
+    margin: 0;
+    padding: 0;
+    padding-top: 4px;
+    font-style: italic;
+}
+
+div.tagsline > div {
+    display: inline-block;
+}
+
+div.tagsline > ul {
+    display: inline-block;
+}
+
+ul.tags-list {
+    list-style: none;
+    margin: 0;
+    margin-left: 10px;
+    padding: 0;
+    /* clear: both; */
+}
+
+ul.tags-list > li {
+    display: inline-block;
+    font-size: 11px;
+    color: white;
+    margin: 0;
+    padding-right: 5px;
+}
+
+#delete-bookmark-button {
+    display: none;
+}
+
 /* /BOOKMARKS LIST  ITEM*/

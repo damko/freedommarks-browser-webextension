@@ -66,43 +66,43 @@
 
             <!-- Search Tab content -->
             <div class="tab-pane" id="search-bookmarks-tab" role="tabpanel">
-                <div class="boxed">
-                    <form id="search-bookmarks-form">
-                        <div class="input-group">
-                            <span class="input-group-addon" id="tags-addon">Tags:</span>
-                            <input type="text" class="form-control" id="search-tags" aria-describedby="tags-addon" placeholder="tag1,tag2, ..." autofocus>
-                            <span class="input-group-addon">
-                                <input type="radio" name="conjunction" value="and">AND
-                            </span>
-                            <span class="input-group-addon">
-                                <input type="radio" name="conjunction" value="or" checked="true">OR
-                            </span>
-                        </div>
-                        <div class="btn-group btn-group-sm">
-                            <button type="button" class="btn btn-primary" id="search-by-tags-button">Search</button>
-                        </div>
-                    </form>
-                </div>
-                <div id="bookmarks-list">
+                <form id="search-bookmarks-form">
+                    <!-- terms -->
+                    <div class="input-group">
+                        <span class="input-group-addon" id="terms-addon">Terms:</span>
+                        <input type="text" class="form-control" id="search-terms" aria-describedby="terms-addon" placeholder="term1,term2, ..." autofocus>
+                    </div>
+                    <!-- tags -->
+                    <div class="input-group">
+                        <span class="input-group-addon" id="tags-addon">Tags:&nbsp;</span>
+                        <input type="text" class="form-control" id="search-tags" aria-describedby="tags-addon" placeholder="tag1,tag2, ..." autofocus>
+                        <span class="input-group-addon">
+                            <input type="radio" name="conjunction" value="and">AND
+                        </span>
+                        <span class="input-group-addon" style="width: 70px;">
+                            <input type="radio" name="conjunction" value="or" checked="true">OR
+                        </span>
+                    </div>
+                    <div class="btn-group btn-group-sm zero">
+                        <button type="button" class="btn btn-primary" id="search-by-tags-button">Search</button>
+                    </div>
+                </form>
+                <div id="bookmarks-list"></div>
             </div>
 
+            <!-- Notification area -->
+            <div id="notification-area"></div>
 
         </div>
 
+        <div id="bottom-line">FreedomMarks</div> 
 
-        <!-- Notification area -->
-        <div id="notification-area"></div>
+        <script src="js/third-party/jquery-2.2.4.min.js"></script>
+        <script src="js/third-party/jquery-ui.min.js"></script>
+        <script src="js/third-party/bootstrap.min.js"></script>
+        <script src="js/third-party/chrome-promise.js"></script>
+        <script src="js/FreedomMarks.js"></script>
+        <script src="js/bookmarks-html-list-generator.js"></script>
 
-    </div>
- 
-    <div id="bottom-line">FreedomMarks</div> 
-
-    <script src="js/third-party/jquery-2.2.4.min.js"></script>
-    <script src="js/third-party/jquery-ui.min.js"></script>
-    <script src="js/third-party/bootstrap.min.js"></script>
-    <script src="js/third-party/chrome-promise.js"></script>
-    <script src="js/FreedomMarks.js"></script>
-    <script src="js/bookmarks-html-list-generator.js"></script>
-    
-</body>
+    </body>
 </html>
