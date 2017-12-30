@@ -1,4 +1,4 @@
-debug = true;
+debug = false;
 
 jQuery.support.cors = true;
 
@@ -16,6 +16,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     browser.storage.local.get('freedommarks_settings').then(function(result) {
 
         var settings = result.freedommarks_settings;
+        if(debug) console.log(settings);
 
         if(!settings.server_url) {
             addNotification('error','Please set the Options for this extension');
@@ -26,29 +27,48 @@ document.addEventListener("DOMContentLoaded", function(event) {
         username = settings.username;
         password = settings.password;
 
+        if(settings.bookmark_main_tab) {
+            if(debug) console.log('bookmark tab is supposed to have focus');
+            var bookmarkLabel_active_status = document.getElementById("save-bookmark-tab-label");
+            bookmarkLabel_active_status.className += "active";
+
+            var bookmarkTab_active_status = document.getElementById("save-bookmark-tab");
+            bookmarkTab_active_status.className += "active";
+        }
+
+        if(settings.search_main_tab) {
+            if(debug) console.log('search tab is supposed to have focus');
+            var searchLabel_active_status = document.getElementById("search-bookmarks-tab-label");
+            searchLabel_active_status.className += "active";
+
+            var searchTab_active_status = document.getElementById("search-bookmarks-tab");
+            searchTab_active_status.className += "active";
+        }
+
     });
 
-    // TODO
-    // I want to search for the URL in the database before filling in the form
-    // but Nextcloud Bookmarks API does not supports this kind of query yet
-    //
-    // CurrentBrowserTab(searchForCurrentUrl);
-    //
-    // Therefore, for now, I replace it with this
-    CurrentBrowserTab(fillForm);
+    //Checks if the URL of the current tab is already saved on the server
+    CurrentBrowserTab(searchForCurrentUrl);
+
 
     // when a tab-pane gets activated ...
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
-
-        // closes the notification area
-        $('#notification-area').hide();
-
         // when necessary, it focuses the "search-tags" input box
         e.preventDefault();
         var target = $(e.target).attr("href"); // activated tab's ID
+        if (target == '#save-bookmark-tab') {
+            if(debug) console.log('first tab has been activated');
+            // closes the notification area
+            $('#notification-area').hide();
+            $('#bookmark-title').focus();
+            var searchTab = document.getElementById("search-bookmarks-tab");
+            searchTab.className = "tab-pane";
+        }
         if (target == '#search-bookmarks-tab') {
             if(debug) console.log('second tab has been activated');
             $('#search-terms').focus();
+            var bookmarkTab = document.getElementById("save-bookmark-tab");
+            bookmarkTab.className = "tab-pane";
         }
     });
 
@@ -85,26 +105,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
         deleteBookmark(e);
     });
 });
-
-
-// function getBrowser(){
-
-//     if(debug) console.log(navigator);
-
-    //var sBrowser, sUsrAg = navigator.userAgent;
-
-    //  else if (sUsrAg.indexOf("Safari") > -1) {
-    //     sBrowser = "Apple Safari";
-    // } else if (sUsrAg.indexOf("Opera") > -1) {
-    //     sBrowser = "Opera";
-    // } else if (sUsrAg.indexOf("Firefox") > -1) {
-    //     sBrowser = "Mozilla Firefox";
-    // } else if (sUsrAg.indexOf("MSIE") > -1) {
-    //     sBrowser = "Microsoft Internet Explorer";
-    // }
-
-    //return browser;
-// }
 
 
 
@@ -156,12 +156,83 @@ function CurrentBrowserTab(callback) {
 function fillForm(browserTab){
     if(debug) console.log('function: ' + arguments.callee.name);
     // This fills in the hidden form field "bookmark-url" with tab's URL
-    document.getElementById("bookmark-url").value = browserTab.url;
+    //document.getElementById("bookmark-url").value = browserTab.url;
     //This ifills in the bookmark title with the page title of the current tab
-    document.getElementById("bookmark-title").value = browserTab.title;
+    //document.getElementById("bookmark-title").value = browserTab.title;
+    $('#bookmark-title').val(browserTab.title);
+    $('#bookmark-url').value = browserTab.url;
+
+}
+
+function searchForCurrentUrl(browserTab){
+
+    if(debug) console.log('function: ' + arguments.callee.name);
+
+    // In any case fills in the hidden form field "bookmark-url" with tab's URL
+    document.getElementById("bookmark-url").value = browserTab.url;
+
+    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark_by_url';
+
+    console.log('url: ' + browserTab.url);
+
+    $.ajax({
+        url: endpoint,
+        method: "GET",
+        //basic authentication
+        beforeSend: function (xhr) {
+            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
+        },
+        data: {
+            url: browserTab.url,
+            user: username
+        },
+        dataType: 'json',
+    })
+    .success(function(result){
+
+        if(debug) console.log('function: search by url success');
+        if(debug) console.log(result);
+
+        if(result.status == 'error'){
+            addNotification('Server Error',result.message);
+        }
+
+        if(typeof result.bookmark.id == 'undefined') {
+            CurrentBrowserTab(fillForm);
+        } else {
+            var bookmark = result.bookmark;
+            if(debug) console.log(bookmark);
+
+            $('#bookmark-additional-info').show();
+            $('#bookmark-id').val(bookmark.id);
+            $('#bookmark-title').val(bookmark.title);
+            $('#bookmark-tags').val(bookmark.tags);
+            $('#bookmark-description').val(bookmark.description);
+            var d = new Date(bookmark.added*1000);
+            var added = ISODateString(d);
+            $('#bookmark-created_at').text(added);
+            var d = new Date(bookmark.lastmodified*1000);
+            var lastmodified = ISODateString(d);
+            $('#bookmark-updated_at').text(lastmodified);
+
+            //buttons
+            $('#save-bookmark-button').show();
+            $('#save-bookmark-button').text("Update");
+            $('#delete-bookmark-button').show();
+        }
+    })
+    .error(function(XMLHttpRequest, status, errorThrown){
+        if(debug) {
+            console.log('ajax error');
+            console.log("Status: " + status);
+            console.log("Error: " + errorThrown);
+        }
+    })
 }
 
 function saveBookmark(){
+
+    if(debug) console.log('function: ' + arguments.callee.name);
 
     var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark';
 
@@ -188,6 +259,7 @@ function saveBookmark(){
         dataType: 'json',
     })
     .success(function(result){
+        console.log(result);
         var bookmark = result.item;
         if(bookmark.id){
             $('#save-bookmark-button').hide();
@@ -196,6 +268,13 @@ function saveBookmark(){
             addNotification('success','Bookmark saved!');
         } else {
             addNotification('error','Bookmark not saved. Please check your settings.');
+        }
+    })
+    .error(function(XMLHttpRequest, status, errorThrown){
+        if(debug) {
+            console.log('ajax error');
+            console.log("Status: " + status);
+            console.log("Error: " + errorThrown);
         }
     });
 
@@ -213,12 +292,16 @@ function searchByTermsOrTags(){
     var terms = getTagsArrayFromElement('search-terms');
     var tags = getTagsArrayFromElement('search-tags');
     var conjunction = $("input[name='conjunction']:checked"). val();
+    var page = 0;
+    if($("input[name='disable_paging']:checked"). val()) {
 
-    searchBookmarks(endpoint, terms, tags, conjunction);
+        var page = -1;
+    }
+    searchBookmarks(endpoint, terms, tags, conjunction, page);
 }
 
 
-function searchBookmarks(endpoint, terms, tags, conjunction){
+function searchBookmarks(endpoint, terms, tags, conjunction, page){
 
     if(debug) console.log('function: ' + arguments.callee.name);
     if(debug) testCorsEnabled(endpoint);
@@ -238,7 +321,8 @@ function searchBookmarks(endpoint, terms, tags, conjunction){
             search: terms,
             tags: tags,
             conjunction: conjunction,
-            page: -1
+            page: page,
+            limit: 30
         },
         dataType: 'json',
     })
@@ -261,14 +345,14 @@ function searchBookmarks(endpoint, terms, tags, conjunction){
             console.log("Status: " + status);
             console.log("Error: " + errorThrown);
         }
-    })
-    .complete(function(jqXHR, textStatus){
-        if(debug) {
-            console.log('ajax completed');
-            console.log(jqXHR);
-            console.log(textStatus);
-        }
     });
+    // .complete(function(jqXHR, textStatus){
+    //     if(debug) {
+    //         console.log('ajax completed');
+    //         console.log(jqXHR);
+    //         console.log(textStatus);
+    //     }
+    // });
 }
 
 
@@ -289,6 +373,8 @@ function deleteBookmark(e, bookmarkId){
     // TODO this doesn't work as expected on FF because it closes the extension tab
     // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/User_interface_components#Popups
     // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/Anatomy_of_a_WebExtension
+    // Maybe something can be done with this
+    // https://github.com/mdn/webextensions-examples/tree/master/window-manipulator
     if (!window.confirm("Do you really want to delete this bookmark?")) {
         e.preventDefault();
         return false;
@@ -315,16 +401,23 @@ function deleteBookmark(e, bookmarkId){
         $('#save-bookmark-button').text("Add");
         $('#save-bookmark-button').show();
         addNotification('success','bookmark deleted');
+    })
+    .error(function(XMLHttpRequest, status, errorThrown){
+        if(debug) {
+            console.log('ajax error');
+            console.log("Status: " + status);
+            console.log("Error: " + errorThrown);
+        }
     });
-    //TODO handle failure
-
 }
 
+// https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/notifications
+// This could become a browser notification
 function addNotification(type,message){
     if(debug) console.log('function: ' + arguments.callee.name);
 
     var div = document.getElementById('notification-area');
-    //div.innerHTML = "";
+    div.innerHTML = "";
 
     var p = document.createElement("p");
     p.textContent = message;
@@ -337,87 +430,3 @@ function addNotification(type,message){
     div.appendChild(p);
     $('#notification-area').show(0).delay(2500).hide(0);
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// This is for the keyboard shortcuts (see maniifesto for more information)
-/*chrome.commands.onCommand.addListener(function(command) {
-        console.log('Command:', command);
-        if(command == "quickly-add-bookmark"){
-            console.log('add current tab as bookmark');
-            lastBookmarks();
-       }
-});*/
-
-// function getInfo(browserTab){
-//     console.log(browserTab);
-//     $('#bookmark-url').val(browserTab.url);
-//     $('#bookmark-title').val(browserTab.title);
-// }
-
-//
-
-// function searchForCurrentUrl(browserTab){
-
-//     browser.storage.local.get(['serverURL', 'username', 'password'], function (result) {
-//         //TODO watch out: after fresh install, before saving the options, "result" could be empty
-
-//         // In any case fills in the hidden form field "bookmark-url" with tab's URL
-//         document.getElementById("bookmark-url").value = browserTab.url;
-
-//         var endpoint = result.serverURL + '/bookmark/search-by-url';
-
-//         $.ajax({
-//             method: "GET",
-//             url: endpoint,
-//             data: {
-//                 userid: '1234567890',
-//                 url: browserTab.url
-//             },
-//             dataType: 'json',
-//         })
-//         .done(function(bookmark){
-//             if (bookmark ) {
-//                 $('#bookmark-additional-info').show();
-//                 $('#bookmark-id').val(bookmark.id);
-//                 $('#bookmark-title').val(bookmark.title);
-//                 $('#bookmark-tags').val(bookmark.tags);
-//                 $('#bookmark-note').val(bookmark.note);
-//                 $('#bookmark-title').val(bookmark.title);
-//                 $('#bookmark-created_at').text(bookmark.created_at);
-//                 $('#bookmark-updated_at').val(bookmark.updated_at);
-
-//                 //buttons
-//                 $('#save-bookmark-button').show();
-//                 $('#save-bookmark-button').text("Update");
-//                 $('#delete-bookmark-button').show();
-
-//             } else {
-//                 $('#bookmark-title').val(browserTab.title);
-//             }
-//         });
-
-//     });
-// }

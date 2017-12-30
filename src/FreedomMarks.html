@@ -17,10 +17,10 @@
 
         <!-- Tab labels -->
         <ul id="extension-tabs" class="nav nav-tabs" role="tablist">
-            <li role="presentation" class="active">
+            <li role="presentation" id="save-bookmark-tab-label">
                 <a href="#save-bookmark-tab" id="save-bookmark-tab-link" aria-controls="save-bookmark-tab" role="tab" data-toggle="tab">Bookmark</a>
             </li>
-            <li role="presentation">
+            <li role="presentation" id="search-bookmarks-tab-label">
                 <a href="#search-bookmarks-tab" id="search-bookmarks-tab-link" aria-controls="search-bookmarks-tab" role="tab" data-toggle="tab">Search</a>
             </li>
         </ul>
@@ -31,7 +31,7 @@
 
 
             <!-- Bookmark Tab content -->
-            <div class="tab-pane active" id="save-bookmark-tab" role="tabpanel">
+            <div class="tab-pane" id="save-bookmark-tab" role="tabpanel">
                 <form id="save-bookmark-form">
                     <input type="hidden" class="form-control" id="bookmark-id">
                     <input type="hidden" class="form-control" id="bookmark-url">
@@ -77,12 +77,20 @@
                         <span class="input-group-addon" id="tags-addon">Tags:&nbsp;</span>
                         <input type="text" class="form-control" id="search-tags" aria-describedby="tags-addon" placeholder="tag1,tag2, ..." autofocus>
                         <span class="input-group-addon">
-                            <input type="radio" name="conjunction" value="and">AND
+                            <input type="radio" name="conjunction" value="and" checked="true">AND
                         </span>
-                        <span class="input-group-addon" style="width: 70px;">
-                            <input type="radio" name="conjunction" value="or" checked="true">OR
+                        <span class="input-group-addon">
+                            <input type="radio" name="conjunction" value="or">OR
                         </span>
                     </div>
+                    <!-- disable paging -->
+                    <div class="input-group">
+                        <span class="input-group-addon" id="tags-addon">Disable paging:</span>
+                        <span class="form-control">
+                            <input type="checkbox" name="disable_paging" value="disable_paging" />
+                        </span>
+                    </div>
+
                     <div class="btn-group btn-group-sm zero">
                         <button type="button" class="btn btn-primary" id="search-by-tags-button">Search</button>
                     </div>
@@ -97,12 +105,13 @@
 
         <div id="bottom-line">FreedomMarks</div> 
 
-        <script src="js/third-party/jquery-2.2.4.min.js"></script>
-        <script src="js/third-party/jquery-ui.min.js"></script>
-        <script src="js/third-party/bootstrap.min.js"></script>
-        <script src="js/third-party/chrome-promise.js"></script>
-        <script src="js/FreedomMarks.js"></script>
-        <script src="js/bookmarks-html-list-generator.js"></script>
-
     </body>
+
+    <script src="js/third-party/jquery-2.2.4.min.js"></script>
+    <script src="js/third-party/jquery-ui.min.js"></script>
+    <script src="js/third-party/bootstrap.min.js"></script>
+    <script src="js/third-party/chrome-promise.js"></script>
+    <script src="js/FreedomMarks.js"></script>
+    <script src="js/bookmarks-html-list-generator.js"></script>
+
 </html>

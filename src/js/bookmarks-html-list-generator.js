@@ -7,7 +7,7 @@ function makeBookmarksList(bookmarks, div_id){
     if(debug) console.log(bookmarks);
 
     var bookmarks_html_list = document.getElementById(div_id);;
-    //bookmarks_html_list.innerHTML = "";
+    bookmarks_html_list.innerHTML = "";
 
     if(bookmarks.length == 0) {
         var h3 = document.createElement("h3");

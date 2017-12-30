@@ -34,6 +34,8 @@ document.querySelector('#saveFreedomMarksSettings').addEventListener('click', ()
             server_url: document.getElementById('server_url').value,
             username: document.getElementById('username').value,
             password: document.getElementById('password').value,
+            bookmark_main_tab: document.getElementById('bookmark_main_tab').checked,
+            search_main_tab: document.getElementById('search_main_tab').checked,
         }
 
     }).then(function(result) {
@@ -57,6 +59,8 @@ browser.storage.local.get('freedommarks_settings').then(function(result) {
     document.getElementById('server_url').value = 'https://127.0.0.1:80';
     document.getElementById('username').value = 'username';
     document.getElementById('password').value = 'strong-password';
+    document.getElementById('bookmark_main_tab').checked = true;
+    document.getElementById('search_main_tab').checked = false;
 
     var settings = result.freedommarks_settings;
 
@@ -70,6 +74,14 @@ browser.storage.local.get('freedommarks_settings').then(function(result) {
 
     if(settings.password) {
       document.getElementById('password').value = settings.password;
+    }
+
+    if(settings.bookmark_main_tab) {
+        document.getElementById('bookmark_main_tab').checked = true;
+    }
+
+    if(settings.search_main_tab) {
+        document.getElementById('search_main_tab').checked = true;
     }
 
     if(debug) console.log('local storage settings: ' + JSON.stringify(settings));

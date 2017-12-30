@@ -27,20 +27,19 @@ ul.bookmarks-list{
 
 ul.bookmarks-list > li {
     min-height: 80px;
-    max-height: 170px;
+    max-height: 190px;
     padding: 0;
-    padding-bottom: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
     margin:0;
-    margin-top: 10px;
     border: 0;
     border-bottom: 1px solid #ccc;
 }
 
 
-/*            
-#last-bookmarks-list > li:nth-child(even) {
-    background: gray;
-}*/
+ul.bookmarks-list > li:nth-child(even) {
+    background: #e8e8e8;
+}
 /* /BOOKMARKS LIST */
 
 
@@ -55,7 +54,7 @@ div.right {
 }
 
 div.bookmark-title {
-    font-size: 11px;
+    font-size: 14px;
     color: #aaa;
 
     /*truncate*/
@@ -67,7 +66,7 @@ div.bookmark-title {
 
 div.bookmark-title > a {
 
-    font-size: 18px;
+    font-size: 14px;
     text-decoration: none;
 }
 
