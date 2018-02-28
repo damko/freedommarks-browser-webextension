@@ -1,8 +1,8 @@
 #Browser extension for NextCloud Bookmarks
 
-This is a cross-browser extension for [NextCloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for NextCloud. 
+This is a cross-browser extension for [NextCloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for NextCloud.
 
-It allows you to add, search and delete your NextCloud Bookmarks. 
+It allows you to add, search and delete your NextCloud Bookmarks.
 
 This extension does not synchronize your browser bookmarks with NextCloud Bookmarks and it will never perform any kind of synchronization between the browser and NextCloud.
 
@@ -14,31 +14,23 @@ _Note: this extension doesn't work on OwnCloud but you can fork this repo and mo
 
 * it adds new bookmarks
 * it lists latest bookmarks
-* it searches and shows bookmarks by tag or by a tag combination (like 'tag1 AND tag2 AND tag3' and 'tag1 OR tag2 OR tag3')
+* it searches for text among the bookmarks' title and description
+* it searches bookmarks by tag or by a tags combination (like 'tag1 AND tag2 AND tag3' and 'tag1 OR tag2 OR tag3')
 * it deletes a bookmark
 
 ## Missing features
 
 * it can not search for a bookmark starting from a URL (API lacks the method)
-* it can not search in bookmarks' title (API lacks the method)
-* it can not search in bookmarks' description (API lacks the method)
 * it can not retrieve the list of already set tags (API lacks the method)
-* it can not edit a bookmark
+* it does not edit a bookmark
 * it lacks a translation (localization) system
 * it lacks translations
 
-## Disclaimer
+# Disclaimer
 
-This extension, due to its early stage, is **not ready for production**. It works but it's unsecure and it also requires to make some changes to the Nextcloud Bookmarks application in order to work properly.
+This extension is **ready for production** but, of course, it can have bugs.
 
-However you can still use it if you match **all** these requirements:
-
-* you connect to your NextCloud server through a VPN or your NextCloud server runs in your LAN
-* you can connect to your NextCloud server with the HTTP protocol
-* you are ready to tweak a little your NextCloud Bookmarks app
-* you don't mind having this extension's credentials stored in clear text in your browser
-
-## Screenshots
+# Screenshots
 
 ![add_bookmark](https://github.com/damko/freedommarks-browser-webextension/blob/master/screenshots/screenshot-freedommarks-add_bookmark.jpg)
 
@@ -50,16 +42,18 @@ However you can still use it if you match **all** these requirements:
 
 ![search_by_tags_OR](https://github.com/damko/freedommarks-browser-webextension/blob/master/screenshots/screenshot-freedommarks-search_by_tags_OR.jpg)
 
-### On Firefox 
+## Firefox screenshots
 
 ![firefox_extensions_list](https://github.com/damko/freedommarks-browser-webextension/blob/master/screenshots/screenshot-freedommarks-firefox_extensions_list.jpg)
 
 ![firefox_options](https://github.com/damko/freedommarks-browser-webextension/blob/master/screenshots/screenshot-freedommarks-firefox_options.jpg)
 
-### On Chrome
+## Chrome screenshots
+Update 2018-02-28. Please don't use this extension for now. I didn't have the time to update it yet.
+
 ![chrome_options](https://github.com/damko/freedommarks-browser-webextension/blob/master/screenshots/screenshot-freedommarks-chrome_options.jpg)
 
-## Help needed
+# Help needed
 
 I'd love to have any kind of feedback on this extension.
 
@@ -69,55 +63,37 @@ If you are not a developer please open issues and tell me what's not working for
 
 Thank you!
 
-## Installation
+# Installation
 
-### Server side
+## Server side
 
-The NextCloud Bookmarks API is very young and there are some things still to figure out therefore, to make this extension work, you need to temporary replace the official Bookmarks app with my version.
+Update 2018-02-28: no changes are required on server side at the moment. Be sure you are running Nextcloud 12.04 or 12.05 and everything should work fine
 
-	cd /var/www/nextcloud/apps
-	#backup your previous app
-	tar zcf bookmarks.tgz bookmarks
-	rm -R bookmarks
-	# anonymously clone my modified app
-	git clone https://github.com/damko/bookmarks
-	#
-	# OR if you a valid git user on your server
-	#git clone git@github.com:damko/bookmarks.git
-	#
-	cd bookmarks
-	git fetch
-	git checkout nextcloud-bookmarks-chrome-0.0.1
+## Client side (browser)
 
-Now you need to edit the file `bookmarks/appinfo/application.php` and replace 'damko' with your Nextcloud username (I told you it's not secure :-) )
+**Firefox**
+You can install the Firefox AddOn from the [Mozilla Webstore](https://addons.mozilla.org/en-US/firefox/addon/freedommarks/)
 
-Then:
-
-	cd ..
-	chown www-data:www-data -fR bookmarks
-
-Anyway, no worries, this is a **temporary thing**. I'm sending PRs hoping that they will be accepted and, in any case, I will change my extension code in order to work with the official Bookmarks app. Once things will sattle down, you will be able to use the discard my Bookmarks repo and use the official app package.
-
-### Client side (browser)
-
-Update @2017-01-16: The extension is now published at the Chrome Webstore. You can install it from [here](https://chrome.google.com/webstore/detail/freedommarks/gmmpjoepfelkmeedfkfkadgkhholibko)
-
-Update @2017-01-14: I submitted this extension both on [Mozilla Webstore](https://addons.mozilla.org/en-US/firefox/addon/freedommarks/) and I'm waiting for it to be approved. Meanwhile, if you are on Firefox, you need to follow the procedure written below.
+**Chrome**
+Update @2017-01-16: You can install the Chrome Extension from the [webstore](https://chrome.google.com/webstore/detail/freedommarks/gmmpjoepfelkmeedfkfkadgkhholibko)
+Update 2018-02-28. Please don't use this extension for now. I didn't have the time to update it yet.
 
 
-On your pc, follow these step:
+## If you want to modify or debug this extension:
+
+Follow these steps on your pc:
 
 * clone this extension repository:
 
-	git clone git@github.com:damko/freedommarks-browser-webextension.git
+    git clone git@github.com:damko/freedommarks-browser-webextension.git
 
 * open Firefox and paste this `about:debugging` in the URL bar
 
-* click on the `Load Temporary Add-on` button and select the `nextcloud_bookmarks_chrome/src/manifest.json` file
+* click on the `Load Temporary Add-on` button and select the `freedommarks-browser-webextension/src/manifest.json` file
 
 * click `Open`
 
-* paste this `about:addons` in the URL bar and you will see the FreedomMark extension listed among the others
+* paste this `about:addons` in the URL bar and you will see the FreedomMarks extension listed among the others
 
 * click on the button `Preferences` on the right of FreedomMarks and fill in the form with:
 
