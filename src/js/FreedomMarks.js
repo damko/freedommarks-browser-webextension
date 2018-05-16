@@ -1,4 +1,4 @@
-debug = false;
+debug = true;
 
 jQuery.support.cors = true;
 
@@ -73,7 +73,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
 
-    //Searches for tags when the user hits enter and one the search-bookmarks-tab input fields has focus
+    //when the search-bookmarks-tab input field has focus and the user hits enter it runs the search
     $('#search-tags').keypress(function (e) {
         var key = e.which;
         // the enter key code
@@ -83,6 +83,8 @@ document.addEventListener("DOMContentLoaded", function(event) {
             $('#search-bookmarks-tab').show();
         }
     });
+
+    //when the search-bookmarks-tab input field has focus and the user hits enter it runs the search
     $('#search-terms').keypress(function (e) {
         var key = e.which;
         // the enter key code
@@ -132,7 +134,8 @@ function getTagsArrayFromElement(element_id){
             tags.push(trimmed_tag);
         }
     }
-    tags.push(" ");
+    //tags.push(" ");
+    if (debug) console.log('Tags array: ' + tags);
     return tags;
 }
 
@@ -164,16 +167,19 @@ function fillForm(browserTab){
 
 }
 
+// This function is loaded as soon as the extension is opened
+
 function searchForCurrentUrl(browserTab){
 
-    if(debug) console.log('function: ' + arguments.callee.name);
+    if(debug) {
+        console.log('function: ' + arguments.callee.name);
+        console.log('current url: ' + browserTab.url);
+    }
 
-    // In any case fills in the hidden form field "bookmark-url" with tab's URL
+    // In any case it fills in the hidden form field "bookmark-url" with tab's URL
     document.getElementById("bookmark-url").value = browserTab.url;
 
-    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark_by_url';
-
-    console.log('url: ' + browserTab.url);
+    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/search';
 
     $.ajax({
         url: endpoint,
@@ -190,17 +196,23 @@ function searchForCurrentUrl(browserTab){
     })
     .success(function(result){
 
-        if(debug) console.log('function: search by url success');
-        if(debug) console.log(result);
+        if(debug) {
+            console.log('function: search by url .success');
+            console.log(result);
+        }
 
         if(result.status == 'error'){
             addNotification('Server Error',result.message);
         }
 
         if(typeof result.bookmark.id == 'undefined') {
+            // if (debug) {
+            //     console.log(browserTab);
+            //     console.log("No bookmark found with URL: " + browserTab.url);
+            // }
             CurrentBrowserTab(fillForm);
         } else {
-            var bookmark = result.bookmark;
+            var bookmark = result.item;
             if(debug) console.log(bookmark);
 
             $('#bookmark-additional-info').show();
@@ -253,13 +265,14 @@ function saveBookmark(){
             url: bookmarkurl,
             title: $('#bookmark-title').val(),
             description: $('#bookmark-description').val(),
-            item: getTagsArrayFromElement('bookmark-tags'),
+            item: {tags: getTagsArrayFromElement('bookmark-tags')},
             is_public: true
         },
         dataType: 'json',
     })
     .success(function(result){
-        console.log(result);
+        if (debug) console.log('success');
+        if (debug) console.log(result);
         var bookmark = result.item;
         if(bookmark.id){
             $('#save-bookmark-button').hide();

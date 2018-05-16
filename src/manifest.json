@@ -1,6 +1,6 @@
 {
   "name": "FreedomMarks",
-  "version": "0.0.7",
+  "version": "0.0.8",
   "manifest_version": 2,
   "description": "Browser extension for Nextcloud Bookmarks",
   "homepage_url": "https://github.com/damko/freedommarks-browser-webextension",

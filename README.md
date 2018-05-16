@@ -1,4 +1,4 @@
-#Browser extension for NextCloud Bookmarks
+# Browser extension for NextCloud Bookmarks
 
 This is a cross-browser extension for [NextCloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for NextCloud.
 
@@ -17,6 +17,7 @@ _Note: this extension doesn't work on OwnCloud but you can fork this repo and mo
 * it searches for text among the bookmarks' title and description
 * it searches bookmarks by tag or by a tags combination (like 'tag1 AND tag2 AND tag3' and 'tag1 OR tag2 OR tag3')
 * it deletes a bookmark
+* you can choose if you want to display first the bookmark form or the search form
 
 ## Missing features
 
@@ -78,24 +79,27 @@ You can install the Firefox AddOn from the [Mozilla Webstore](https://addons.moz
 Update @2017-01-16: You can install the Chrome Extension from the [webstore](https://chrome.google.com/webstore/detail/freedommarks/gmmpjoepfelkmeedfkfkadgkhholibko)
 Update 2018-02-28. Please don't use this extension for now. I didn't have the time to update it yet.
 
+> **Don't forget to configure the addon settings:**
+* URL of your NextCloud server
+* NextCloud username
+* NextCloud password
+
 
 ## If you want to modify or debug this extension:
 
-Follow these steps on your pc:
-
-* clone this extension repository:
+Clone this extension repository in your pc:
 
     git clone git@github.com:damko/freedommarks-browser-webextension.git
 
-* open Firefox and paste this `about:debugging` in the URL bar
+Open Firefox and paste this `about:debugging` in the URL bar
 
-* click on the `Load Temporary Add-on` button and select the `freedommarks-browser-webextension/src/manifest.json` file
+Click on the `Load Temporary Add-on` button and select the `freedommarks-browser-webextension/src/manifest.json` file
 
-* click `Open`
+Click `Open`
 
-* paste this `about:addons` in the URL bar and you will see the FreedomMarks extension listed among the others
+Paste this `about:addons` in the URL bar and you will see the FreedomMarks extension listed among the others
 
-* click on the button `Preferences` on the right of FreedomMarks and fill in the form with:
+Click on the button `Preferences` on the right of FreedomMarks and fill in the form with:
 
 * URL of your NextCloud server
 * NextCloud username
