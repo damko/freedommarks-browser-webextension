@@ -52,8 +52,9 @@ document.addEventListener("DOMContentLoaded", function(event) {
     });
 
     //Checks if the URL of the current tab is already saved on the server
-    CurrentBrowserTab(searchForCurrentUrl);
-
+    CurrentBrowserTab(fillForm);
+    // TODO this must be put on hold because Nextcloud Bookmarks did not accept to add the "search" endpoint
+    // CurrentBrowserTab(searchForCurrentUrl); 
 
     // when a tab-pane gets activated ...
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
