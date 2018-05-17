@@ -1,6 +1,6 @@
 {
   "name": "FreedomMarks",
-  "version": "0.1.0",
+  "version": "0.1.2",
   "manifest_version": 2,
   "description": "Browser extension for Nextcloud Bookmarks",
   "homepage_url": "https://github.com/damko/freedommarks-browser-webextension",
@@ -15,15 +15,15 @@
 
   "browser_action": {
     "browser_style": true,
-    "default_icon": "icons/FreedomMarks_dark.svg",
+    "default_icon": "icons/FreedomMarks_dark_32x32.png",
 
     "theme_icons": [{
-      "light": "icons/FreedomMarks.svg",
-      "dark": "icons/FreedomMarks_dark.svg",
+      "light": "icons/FreedomMarks_light_32x32.png",
+      "dark": "icons/FreedomMarks_dark_32x32.png",
       "size": 32
     }, {
-      "light": "icons/FreedomMarks.svg",
-      "dark": "icons/FreedomMarks_dark.svg",
+      "light": "icons/FreedomMarks_light_48x48.png",
+      "dark": "icons/FreedomMarks_dark_48x48.png",
       "size": 48
     }],
     "default_title": "FreedomMarks",

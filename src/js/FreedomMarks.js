@@ -31,7 +31,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var b = document.getElementById("bookmarks_home_url"); 
         b.setAttribute("href", settings.server_url + '/apps/bookmarks/');
 
-        if(settings.bookmark_main_tab) {
+        if(settings.bookmark_main_tab || !settings.search_main_tab) {
             if(debug) console.log('bookmark tab is supposed to have focus');
             var bookmarkLabel_active_status = document.getElementById("save-bookmark-tab-label");
             bookmarkLabel_active_status.className += "active";
@@ -180,17 +180,13 @@ function CurrentBrowserTab(callback) {
 
 function fillForm(browserTab){
     if(debug) console.log('function: ' + arguments.callee.name);
-    // This fills in the hidden form field "bookmark-url" with tab's URL
-    //document.getElementById("bookmark-url").value = browserTab.url;
-    //This ifills in the bookmark title with the page title of the current tab
-    //document.getElementById("bookmark-title").value = browserTab.title;
-    $('#bookmark-title').val(browserTab.title);
-    $('#bookmark-url').value = browserTab.url;
-
+    if(debug) console.log("url: " + browserTab.url);
+    document.getElementById("bookmark-url").value = browserTab.url;
+    document.getElementById("bookmark-title").value = browserTab.title;
 }
 
 // This function is loaded as soon as the extension is opened
-
+/*
 function searchForCurrentUrl(browserTab){
 
     if(debug) {
@@ -263,8 +259,9 @@ function searchForCurrentUrl(browserTab){
         }
     })
 }
+*/
 
-function saveBookmark(){
+function saveBookmark(browserTab){
 
     if(debug) console.log('function: ' + arguments.callee.name);
 
@@ -274,6 +271,7 @@ function saveBookmark(){
 
     //trim and replace trailing slash
     var bookmarkurl = $('#bookmark-url').val().trim().replace(/\/$/, "");
+    //var bookmarkurl = browserTab.url.trim().replace(/\/$/, "");
     if(debug) console.log('bookmarkurl: ' + bookmarkurl);
 
     $.ajax({
