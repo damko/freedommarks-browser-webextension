@@ -13,14 +13,19 @@
       "scripts": ["js/background.js"]
   },
 
-  "icons": {
-    "32": "icons/FreedomMarks_32x32.png",
-    "48": "icons/FreedomMarks_48x48.png",
-    "96": "icons/FreedomMarks_96x96.png"
-  },
-
   "browser_action": {
-    "default_icon": "icons/FreedomMarks_48x48.png",
+    "browser_style": true,
+    "default_icon": "icons/FreedomMarks_dark.svg",
+
+    "theme_icons": [{
+      "light": "icons/FreedomMarks.svg",
+      "dark": "icons/FreedomMarks_dark.svg",
+      "size": 32
+    }, {
+      "light": "icons/FreedomMarks.svg",
+      "dark": "icons/FreedomMarks_dark.svg",
+      "size": 48
+    }],
     "default_title": "FreedomMarks",
     "default_popup": "FreedomMarks.html"
   },
