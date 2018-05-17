@@ -17,11 +17,17 @@
 
         <!-- Tab labels -->
         <ul id="extension-tabs" class="nav nav-tabs" role="tablist">
+
             <li role="presentation" id="save-bookmark-tab-label">
                 <a href="#save-bookmark-tab" id="save-bookmark-tab-link" aria-controls="save-bookmark-tab" role="tab" data-toggle="tab">Bookmark</a>
             </li>
+
             <li role="presentation" id="search-bookmarks-tab-label">
                 <a href="#search-bookmarks-tab" id="search-bookmarks-tab-link" aria-controls="search-bookmarks-tab" role="tab" data-toggle="tab">Search</a>
+            </li>
+
+            <li role="presentation" id="daily-bookmarks-tab-label">
+                <a href="#daily-bookmarks-tab" id="daily-bookmarks-tab-link" aria-controls="daily-bookmarks-tab" role="tab" data-toggle="tab">Daily</a>
             </li>
         </ul>
 
@@ -98,7 +104,9 @@
                 <div id="bookmarks-list"></div>
             </div>
 
-
+            <div class="tab-pane" id="daily-bookmarks-tab" role="tabpanel">
+                <div id="daily-bookmarks-list">Your daily bookmarks</div>
+            </div>
         </div>
 
         <div id="bottom-line">

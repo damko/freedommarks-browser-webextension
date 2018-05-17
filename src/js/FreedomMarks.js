@@ -60,21 +60,38 @@ document.addEventListener("DOMContentLoaded", function(event) {
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
         // when necessary, it focuses the "search-tags" input box
         e.preventDefault();
+
+        // closes the notification area
+        $('#notification-area').hide();
+
+        var bookmarkTab = document.getElementById("save-bookmark-tab");
+        var searchTab = document.getElementById("search-bookmarks-tab");
+        var dailyTab = document.getElementById("daily-bookmarks-tab");
+
         var target = $(e.target).attr("href"); // activated tab's ID
+
         if (target == '#save-bookmark-tab') {
             if(debug) console.log('first tab has been activated');
-            // closes the notification area
-            $('#notification-area').hide();
-            $('#bookmark-title').focus();
-            var searchTab = document.getElementById("search-bookmarks-tab");
             searchTab.className = "tab-pane";
+            dailyTab.className = "tab-pane";
+            CurrentBrowserTab(fillForm);
+            $('#bookmark-title').focus();
         }
+
         if (target == '#search-bookmarks-tab') {
             if(debug) console.log('second tab has been activated');
-            $('#search-terms').focus();
-            var bookmarkTab = document.getElementById("save-bookmark-tab");
             bookmarkTab.className = "tab-pane";
+            dailyTab.className = "tab-pane";
+            $('#search-terms').focus();
         }
+
+        if (target == '#daily-bookmarks-tab') {
+            if(debug) console.log('third tab has been activated');
+            bookmarkTab.className = "tab-pane";
+            searchTab.className = "tab-pane";
+            searchDaily();
+        }
+
     });
 
 
@@ -315,19 +332,36 @@ function searchByTermsOrTags(){
 
         var page = -1;
     }
-    searchBookmarks(endpoint, terms, tags, conjunction, page);
+    searchBookmarks(endpoint, terms, tags, conjunction, page, 'bookmarks-list');
+}
+
+function searchDaily(){
+
+    if(debug) console.log('function: ' + arguments.callee.name);
+    if(debug) console.log('server_url: ' + server_url);
+    if(debug) console.log('username: ' + username);
+    if(debug) console.log('password: ' + password);
+
+    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark';
+
+    var terms = '';
+    var tags = ["daily"];
+    var conjunction = 'and';
+    var page = 0;
+    searchBookmarks(endpoint, terms, tags, conjunction, page, 'daily-bookmarks-list');
 }
 
 
-function searchBookmarks(endpoint, terms, tags, conjunction, page){
+function searchBookmarks(endpoint, terms, tags, conjunction, page, listTag){
 
     if(debug) console.log('function: ' + arguments.callee.name);
     if(debug) testCorsEnabled(endpoint);
 
     var select = ['id','url','title','tags', 'description', 'lastmodified'];
     if(terms.length == 0) {
-        var terms = "";
+        var terms = [""];
     }
+
     $.ajax({
         url: endpoint,
         method: "GET",
@@ -354,7 +388,7 @@ function searchBookmarks(endpoint, terms, tags, conjunction, page){
         } else {
             var bookmarks = result.data;
             if(debug) console.log(bookmarks);
-            makeBookmarksList(bookmarks, 'bookmarks-list');
+            makeBookmarksList(bookmarks, listTag);
         }
     })
     .error(function(XMLHttpRequest, status, errorThrown){

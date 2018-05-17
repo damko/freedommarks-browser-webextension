@@ -22,7 +22,7 @@ function makeBookmarksList(bookmarks, div_id){
         h3.className = "subtitle";
         var subtitle = document.createElement("span");
         subtitle.className = "subtitle";
-        subtitle.textContent = '(found ' + bookmarks.length + ' items)';
+        subtitle.textContent = '(showing ' + bookmarks.length + ' items)';
         h3.appendChild(subtitle);
         bookmarks_html_list.appendChild(h3);
 
