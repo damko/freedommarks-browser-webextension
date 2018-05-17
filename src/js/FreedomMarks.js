@@ -3,7 +3,7 @@ debug = true;
 jQuery.support.cors = true;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-
+  
     if(debug) console.log("DOM fully loaded and parsed");
 
     var sUsrAg = navigator.userAgent;
@@ -26,6 +26,10 @@ document.addEventListener("DOMContentLoaded", function(event) {
         server_url = settings.server_url;
         username = settings.username;
         password = settings.password;
+
+
+        var b = document.getElementById("bookmarks_home_url"); 
+        b.setAttribute("href", settings.server_url + '/apps/bookmarks/');
 
         if(settings.bookmark_main_tab) {
             if(debug) console.log('bookmark tab is supposed to have focus');
@@ -278,9 +282,9 @@ function saveBookmark(){
             $('#save-bookmark-button').hide();
             $('#delete-bookmark-button').show();
             $('#bookmark-id').val(bookmark.id);
-            addNotification('success','Bookmark saved!');
+            addNotification('success','Saved');
         } else {
-            addNotification('error','Bookmark not saved. Please check your settings.');
+            addNotification('error','Not saved');
         }
     })
     .error(function(XMLHttpRequest, status, errorThrown){
@@ -432,14 +436,18 @@ function addNotification(type,message){
     var div = document.getElementById('notification-area');
     div.innerHTML = "";
 
-    var p = document.createElement("p");
-    p.textContent = message;
+    var d = document.createElement("div");
     if(type == "success"){
-        p.className = "notify";
+        d.className = "notify";
     }
     if(type == "error") {
-        p.className = "alarm";
+        d.className = "alarm";
     }
-    div.appendChild(p);
+
+    var span = document.createElement("span");
+    span.textContent = message;
+
+    div.appendChild(d).appendChild(span);
+
     $('#notification-area').show(0).delay(2500).hide(0);
 }
