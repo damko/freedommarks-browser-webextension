@@ -40,7 +40,7 @@ span.input-group-addon {
 
 #bottom-line {
     display: table;
-    width: 100%; 
+    width: 100%;
     /* table-layout: fixed;  */
     border-spacing: 2px;
     font-size: 12px;
@@ -68,6 +68,12 @@ div.right {
 
 
 /* NOTIFICATION AREA */
+
+#missing-options {
+    margin: 10px;
+    padding: 7px;
+    font-size: 15px;
+}
 
 #notification-area {
     display: none;

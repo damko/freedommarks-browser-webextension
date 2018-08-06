@@ -56,9 +56,9 @@ document.querySelector('#saveFreedomMarksSettings').addEventListener('click', ()
 browser.storage.local.get('freedommarks_settings').then(function(result) {
 
     //default values
-    document.getElementById('server_url').value = 'https://127.0.0.1:80';
-    document.getElementById('username').value = 'username';
-    document.getElementById('password').value = 'strong-password';
+    document.getElementById('server_url').placeholder = 'https://127.0.0.1:80';
+    document.getElementById('username').placeholder = 'username';
+    document.getElementById('password').placeholder = 'strong-password';
     document.getElementById('bookmark_main_tab').checked = true;
     document.getElementById('search_main_tab').checked = false;
 
