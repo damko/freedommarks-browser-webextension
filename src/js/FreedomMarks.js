@@ -3,7 +3,7 @@ debug = true;
 jQuery.support.cors = true;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  
+
     if(debug) console.log("DOM fully loaded and parsed");
 
     var sUsrAg = navigator.userAgent;
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         password = settings.password;
 
 
-        var b = document.getElementById("bookmarks_home_url"); 
+        var b = document.getElementById("bookmarks_home_url");
         b.setAttribute("href", settings.server_url + '/apps/bookmarks/');
 
         if(settings.bookmark_main_tab || !settings.search_main_tab) {
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //Checks if the URL of the current tab is already saved on the server
     CurrentBrowserTab(fillForm);
     // TODO this must be put on hold because Nextcloud Bookmarks did not accept to add the "search" endpoint
-    // CurrentBrowserTab(searchForCurrentUrl); 
+    // CurrentBrowserTab(searchForCurrentUrl);
 
     // when a tab-pane gets activated ...
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -274,6 +274,11 @@ function saveBookmark(browserTab){
     //var bookmarkurl = browserTab.url.trim().replace(/\/$/, "");
     if(debug) console.log('bookmarkurl: ' + bookmarkurl);
 
+    const saveBtn = document.getElementById('save-bookmark-button');
+    const prevText = saveBtn.innerText;
+    saveBtn.disabled = true;
+    saveBtn.innerText = 'Loading...';
+
     $.ajax({
         url: endpoint,
         method: "POST",
@@ -309,6 +314,10 @@ function saveBookmark(browserTab){
             console.log("Status: " + status);
             console.log("Error: " + errorThrown);
         }
+    })
+    .complete(function() {
+        saveBtn.disabled = false;
+        saveBtn.innerText = prevText;
     });
 
 }
@@ -355,6 +364,10 @@ function searchBookmarks(endpoint, terms, tags, conjunction, page, listTag){
     if(debug) console.log('function: ' + arguments.callee.name);
     if(debug) testCorsEnabled(endpoint);
 
+    const searchBtn = document.getElementById('search-by-tags-button');
+    searchBtn.disabled = true;
+    searchBtn.innerText = 'Loading...';
+
     var select = ['id','url','title','tags', 'description', 'lastmodified'];
     if(terms.length == 0) {
         var terms = [""];
@@ -395,14 +408,11 @@ function searchBookmarks(endpoint, terms, tags, conjunction, page, listTag){
             console.log("Status: " + status);
             console.log("Error: " + errorThrown);
         }
+    })
+    .complete(function() {
+        searchBtn.disabled = false;
+        searchBtn.innerText = 'Search';
     });
-    // .complete(function(jqXHR, textStatus){
-    //     if(debug) {
-    //         console.log('ajax completed');
-    //         console.log(jqXHR);
-    //         console.log(textStatus);
-    //     }
-    // });
 }
 
 
@@ -432,6 +442,10 @@ function deleteBookmark(e, bookmarkId){
 
     var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark/' + bookmarkId;
 
+    const deleteBtn = document.getElementById('delete-bookmark-button');
+    deleteBtn.disabled = true;
+    deleteBtn.innerText = 'Loading...';
+
     $.ajax({
         method: "DELETE",
         url: endpoint,
@@ -458,6 +472,10 @@ function deleteBookmark(e, bookmarkId){
             console.log("Status: " + status);
             console.log("Error: " + errorThrown);
         }
+    })
+    .complete(function() {
+        deleteBtn.disabled = false;
+        deleteBtn.innerText = 'Delete';
     });
 }
 
