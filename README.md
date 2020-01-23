@@ -1,10 +1,10 @@
-# Browser extension for NextCloud Bookmarks
+# Browser extension for Nextcloud Bookmarks
 
-This is a cross-browser extension for [NextCloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for NextCloud.
+This is a cross-browser extension for [Nextcloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for Nextcloud.
 
-It allows you to add, search and delete your NextCloud Bookmarks.
+It allows you to add, search and delete your Nextcloud Bookmarks.
 
-This extension does not synchronize your browser bookmarks with NextCloud Bookmarks and it will never perform any kind of synchronization between the browser and NextCloud.
+This extension does not synchronize your browser bookmarks with Nextcloud Bookmarks and it will never perform any kind of synchronization between the browser and Nextcloud.
 
 It has been tested on Firefox and Chrome but it **should** work also on Opera, Safari and Microsoft Edge.
 
@@ -80,9 +80,9 @@ Update @2017-01-16: You can install the Chrome Extension from the [webstore](htt
 Update 2018-02-28. Please don't use this extension for now. I didn't have the time to update it yet.
 
 > **Don't forget to configure the addon settings:**
-* URL of your NextCloud server
-* NextCloud username
-* NextCloud password
+* URL of your Nextcloud server
+* Nextcloud username
+* Nextcloud password
 
 
 ## If you want to modify or debug this extension:
@@ -101,6 +101,6 @@ Paste this `about:addons` in the URL bar and you will see the FreedomMarks exten
 
 Click on the button `Preferences` on the right of FreedomMarks and fill in the form with:
 
-* URL of your NextCloud server
-* NextCloud username
-* NextCloud password
+* URL of your Nextcloud server
+* Nextcloud username
+* Nextcloud password
