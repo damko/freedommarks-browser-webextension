@@ -3,7 +3,7 @@ debug = true;
 jQuery.support.cors = true;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  
+
     if(debug) console.log("DOM fully loaded and parsed");
 
     var sUsrAg = navigator.userAgent;
@@ -18,17 +18,21 @@ document.addEventListener("DOMContentLoaded", function(event) {
         var settings = result.freedommarks_settings;
         if(debug) console.log(settings);
 
-        if(!settings.server_url) {
-            addNotification('error','Please set the Options for this extension');
+        if(typeof settings === 'undefined' || !settings.server_url) {
+            document.getElementById('missing-options').classList.remove('hide');
+            document.getElementById('content-wrapper').classList.add('hide');
             return false;
         }
+
+        document.getElementById('missing-options').classList.add('hide');
+        document.getElementById('content-wrapper').classList.remove('hide');
 
         server_url = settings.server_url;
         username = settings.username;
         password = settings.password;
 
 
-        var b = document.getElementById("bookmarks_home_url"); 
+        var b = document.getElementById("bookmarks_home_url");
         b.setAttribute("href", settings.server_url + '/apps/bookmarks/');
 
         if(settings.bookmark_main_tab || !settings.search_main_tab) {
@@ -54,7 +58,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //Checks if the URL of the current tab is already saved on the server
     CurrentBrowserTab(fillForm);
     // TODO this must be put on hold because Nextcloud Bookmarks did not accept to add the "search" endpoint
-    // CurrentBrowserTab(searchForCurrentUrl); 
+    // CurrentBrowserTab(searchForCurrentUrl);
 
     // when a tab-pane gets activated ...
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {

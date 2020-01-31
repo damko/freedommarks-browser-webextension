@@ -14,117 +14,119 @@
     </head>
 
     <body>
-
-        <!-- Tab labels -->
-        <ul id="extension-tabs" class="nav nav-tabs" role="tablist">
-
-            <li role="presentation" id="save-bookmark-tab-label">
-                <a href="#save-bookmark-tab" id="save-bookmark-tab-link" aria-controls="save-bookmark-tab" role="tab" data-toggle="tab">Bookmark</a>
-            </li>
-
-            <li role="presentation" id="search-bookmarks-tab-label">
-                <a href="#search-bookmarks-tab" id="search-bookmarks-tab-link" aria-controls="search-bookmarks-tab" role="tab" data-toggle="tab">Search</a>
-            </li>
-
-            <li role="presentation" id="daily-bookmarks-tab-label">
-                <a href="#daily-bookmarks-tab" id="daily-bookmarks-tab-link" aria-controls="daily-bookmarks-tab" role="tab" data-toggle="tab">Daily</a>
-            </li>
-        </ul>
-
-
-        <!-- Tab panes -->
-        <div class="tab-content">
-
-
-            <!-- Bookmark Tab content -->
-            <div class="tab-pane" id="save-bookmark-tab" role="tabpanel">
-                <form id="save-bookmark-form">
-                    <input type="hidden" class="form-control" id="bookmark-id">
-                    <input type="hidden" class="form-control" id="bookmark-url">
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon1">Title:</span>
-                        <input type="text" class="form-control" id="bookmark-title" aria-describedby="basic-addon1">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon3">Tags:</span>
-                        <input type="text" class="form-control" id="bookmark-tags" aria-describedby="basic-addon3">
-                    </div>
-                    <div class="input-group">
-                        <span class="input-group-addon" id="basic-addon2">Note:</span>
-                        <textarea type="text" class="form-control" id="bookmark-description" aria-describedby="basic-addon2"></textarea>
-                    </div>
-
-                    <ul id="bookmark-additional-info" class="bookmark-additional-info">
-                        <li>Created: <span id="bookmark-created_at"></span></li>
-                        <li>Updated: <span id="bookmark-updated_at"></span></li>
-                    </ul>
-
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-primary" id="save-bookmark-button">Save</button>
-                    </div>
-                    <div class="btn-group" style="float: right;">
-                        <button type="button" class="btn btn-danger" id="delete-bookmark-button">Delete</button>
-                    </div>
-                    <div style="clear: both;"></div>
-                </form>
-            </div>
-
-
-            <!-- Search Tab content -->
-            <div class="tab-pane" id="search-bookmarks-tab" role="tabpanel">
-                <form id="search-bookmarks-form">
-                    <!-- terms -->
-                    <div class="input-group">
-                        <span class="input-group-addon" id="terms-addon">Terms:</span>
-                        <input type="text" class="form-control" id="search-terms" aria-describedby="terms-addon" placeholder="term1,term2, ..." autofocus>
-                    </div>
-                    <!-- tags -->
-                    <div class="input-group">
-                        <span class="input-group-addon" id="tags-addon">Tags:&nbsp;</span>
-                        <input type="text" class="form-control" id="search-tags" aria-describedby="tags-addon" placeholder="tag1,tag2, ..." autofocus>
-                        <span class="input-group-addon">
-                            <input type="radio" name="conjunction" value="and" checked="true">AND
-                        </span>
-                        <span class="input-group-addon">
-                            <input type="radio" name="conjunction" value="or">OR
-                        </span>
-                    </div>
-                    <!-- disable paging -->
-                    <div class="input-group">
-                        <span class="input-group-addon" id="tags-addon">Disable paging:</span>
-                        <span class="form-control">
-                            <input type="checkbox" name="disable_paging" value="disable_paging" />
-                        </span>
-                    </div>
-
-                    <div class="btn-group btn-group-sm zero">
-                        <button type="button" class="btn btn-primary" id="search-by-tags-button">Search</button>
-                    </div>
-                </form>
-                <div id="bookmarks-list"></div>
-            </div>
-
-            <div class="tab-pane" id="daily-bookmarks-tab" role="tabpanel">
-                <div id="daily-bookmarks-list">Your daily bookmarks</div>
-            </div>
+        <div id="missing-options" class="alarm hide">
+            Please set the options for this extension.
         </div>
 
-        <div id="bottom-line">
-            <div class="column">
-                <a class="bottom-link" id="bookmarks_home_url">My bookmarks</a>
+        <div id="content-wrapper">
+            <!-- Tab labels -->
+            <ul id="extension-tabs" class="nav nav-tabs" role="tablist">
+
+                <li role="presentation" id="save-bookmark-tab-label">
+                    <a href="#save-bookmark-tab" id="save-bookmark-tab-link" aria-controls="save-bookmark-tab" role="tab" data-toggle="tab">Bookmark</a>
+                </li>
+
+                <li role="presentation" id="search-bookmarks-tab-label">
+                    <a href="#search-bookmarks-tab" id="search-bookmarks-tab-link" aria-controls="search-bookmarks-tab" role="tab" data-toggle="tab">Search</a>
+                </li>
+
+                <li role="presentation" id="daily-bookmarks-tab-label">
+                    <a href="#daily-bookmarks-tab" id="daily-bookmarks-tab-link" aria-controls="daily-bookmarks-tab" role="tab" data-toggle="tab">Daily</a>
+                </li>
+            </ul>
+
+
+            <!-- Tab panes -->
+            <div class="tab-content">
+
+
+                <!-- Bookmark Tab content -->
+                <div class="tab-pane" id="save-bookmark-tab" role="tabpanel">
+                    <form id="save-bookmark-form">
+                        <input type="hidden" class="form-control" id="bookmark-id">
+                        <input type="hidden" class="form-control" id="bookmark-url">
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon1">Title:</span>
+                            <input type="text" class="form-control" id="bookmark-title" aria-describedby="basic-addon1">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon3">Tags:</span>
+                            <input type="text" class="form-control" id="bookmark-tags" aria-describedby="basic-addon3">
+                        </div>
+                        <div class="input-group">
+                            <span class="input-group-addon" id="basic-addon2">Note:</span>
+                            <textarea type="text" class="form-control" id="bookmark-description" aria-describedby="basic-addon2"></textarea>
+                        </div>
+
+                        <ul id="bookmark-additional-info" class="bookmark-additional-info">
+                            <li>Created: <span id="bookmark-created_at"></span></li>
+                            <li>Updated: <span id="bookmark-updated_at"></span></li>
+                        </ul>
+
+                        <div class="btn-group">
+                            <button type="button" class="btn btn-primary" id="save-bookmark-button">Save</button>
+                        </div>
+                        <div class="btn-group" style="float: right;">
+                            <button type="button" class="btn btn-danger" id="delete-bookmark-button">Delete</button>
+                        </div>
+                        <div style="clear: both;"></div>
+                    </form>
+                </div>
+
+
+                <!-- Search Tab content -->
+                <div class="tab-pane" id="search-bookmarks-tab" role="tabpanel">
+                    <form id="search-bookmarks-form">
+                        <!-- terms -->
+                        <div class="input-group">
+                            <span class="input-group-addon" id="terms-addon">Terms:</span>
+                            <input type="text" class="form-control" id="search-terms" aria-describedby="terms-addon" placeholder="term1,term2, ..." autofocus>
+                        </div>
+                        <!-- tags -->
+                        <div class="input-group">
+                            <span class="input-group-addon" id="tags-addon">Tags:&nbsp;</span>
+                            <input type="text" class="form-control" id="search-tags" aria-describedby="tags-addon" placeholder="tag1,tag2, ..." autofocus>
+                            <span class="input-group-addon">
+                                <input type="radio" name="conjunction" value="and" checked="true">AND
+                            </span>
+                            <span class="input-group-addon">
+                                <input type="radio" name="conjunction" value="or">OR
+                            </span>
+                        </div>
+                        <!-- disable paging -->
+                        <div class="input-group">
+                            <span class="input-group-addon" id="tags-addon">Disable paging:</span>
+                            <span class="form-control">
+                                <input type="checkbox" name="disable_paging" value="disable_paging" />
+                            </span>
+                        </div>
+
+                        <div class="btn-group btn-group-sm zero">
+                            <button type="button" class="btn btn-primary" id="search-by-tags-button">Search</button>
+                        </div>
+                    </form>
+                    <div id="bookmarks-list"></div>
+                </div>
+
+                <div class="tab-pane" id="daily-bookmarks-tab" role="tabpanel">
+                    <div id="daily-bookmarks-list">Your daily bookmarks</div>
+                </div>
             </div>
-            <div id="notification-area" class="column">
-            </div>
-            <div class="column">
-                <div class="right">
-                    <a class="bottom-link" href="https://github.com/damko/freedommarks-browser-webextension" target="_blank">
-                FreedomMarks</a>
+
+            <div id="bottom-line">
+                <div class="column">
+                    <a class="bottom-link" id="bookmarks_home_url">My bookmarks</a>
+                </div>
+                <div id="notification-area" class="column">
+                </div>
+                <div class="column">
+                    <div class="right">
+                        <a class="bottom-link" href="https://github.com/damko/freedommarks-browser-webextension" target="_blank">
+                    FreedomMarks</a>
+                    </div>
                 </div>
             </div>
         </div>
-
-
-
     </body>
 
     <script src="js/third-party/jquery-2.2.4.min.js"></script>
