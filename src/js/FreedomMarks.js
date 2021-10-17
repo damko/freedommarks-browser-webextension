@@ -13,7 +13,11 @@ document.addEventListener("DOMContentLoaded", function(event) {
     }
 
     // retrieves settings from local storage
-    browser.storage.local.get('freedommarks_settings').then(function(result) {
+    browser.storage.local.get('freedommarks_settings').then(SettingsFound);
+
+});
+
+function SettingsFound(result) {
 
         var settings = result.freedommarks_settings;
         if(debug) console.log(settings);
@@ -48,8 +52,6 @@ document.addEventListener("DOMContentLoaded", function(event) {
             var searchTab_active_status = document.getElementById("search-bookmarks-tab");
             searchTab_active_status.className += "active";
         }
-
-    });
 
     //Checks if the URL of the current tab is already saved on the server
     CurrentBrowserTab(fillForm);
@@ -197,20 +199,20 @@ function searchForCurrentUrl(browserTab){
     // In any case it fills in the hidden form field "bookmark-url" with tab's URL
     document.getElementById("bookmark-url").value = browserTab.url;
 
-    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/search';
+    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark';
+    
+    //orderby is default: lastmodified
+    var searchurl = "search[]=" + browserTab.url;
+    var searchtitle = "search[]=" + browserTab.title;
+    var serachorder = "sortby=url";  // Valid values are: url, title, description, public, lastmodified, clickcount
 
     $.ajax({
-        url: endpoint,
+        url: endpoint + "?" + searchurl + "&" + serachorder, //replace searchurl with searchtitle if you want search title
         method: "GET",
         //basic authentication
         beforeSend: function (xhr) {
             xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
         },
-        data: {
-            url: browserTab.url,
-            user: username
-        },
-        dataType: 'json',
     })
     .success(function(result){
 
@@ -223,14 +225,19 @@ function searchForCurrentUrl(browserTab){
             addNotification('Server Error',result.message);
         }
 
-        if(typeof result.bookmark.id == 'undefined') {
+        if(typeof result.data.id == 'undefined') {
             // if (debug) {
             //     console.log(browserTab);
             //     console.log("No bookmark found with URL: " + browserTab.url);
             // }
             CurrentBrowserTab(fillForm);
         } else {
-            var bookmark = result.item;
+            // Get all found bookmarks with:
+            // for ( bookmark of result.data ){ if(debug) console.log(bookmark); }
+            
+            // Get only the first found bookmark
+            var bookmark = result.data[0];
+            
             if(debug) console.log(bookmark);
 
             $('#bookmark-additional-info').show();
@@ -285,7 +292,8 @@ function saveBookmark(browserTab){
             url: bookmarkurl,
             title: $('#bookmark-title').val(),
             description: $('#bookmark-description').val(),
-            item: {tags: getTagsArrayFromElement('bookmark-tags')},
+            // tags want an array!
+            tags: document.getElementsById('bookmark-tags').value.toString().split(',').map(s => s.trim()),
             is_public: true
         },
         dataType: 'json',
