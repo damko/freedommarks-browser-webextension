@@ -1,3 +1,30 @@
+# EDIT 2023-09-05
+
+I'm archiving this projects as it's probably too old to be updated or useful to anyone. 
+
+Apologies for the long queue of unanswered issue.
+
+---
+
+I personally changed my approach towards bookmarks and since a few years now I'm using this workflow:
+
+* I send myself an email with the URL and, eventually, additional notes
+* the "envelop icon" present in Firefox next to the URL bar is very comfortable for sending
+* when I need to bookmark a group of tabs, I use the [Save Tabs FF extension](https://github.com/mnba/save-tabs) to quickly create the email content. I send the email with my email client.
+* when I need to search for a bookmark I use my email client search functionality
+
+The main advantages of this approach:
+
+* super simple
+* hard to break, always works
+* works on any device
+* easily accessible, even from phone
+* easy to add any kind of note regarding the bookmark
+* easy to share (email forwarding)
+* easy to search
+  
+---
+
 # Browser extension for Nextcloud Bookmarks
 
 This is a cross-browser extension for [Nextcloud Bookmarks](https://github.com/nextcloud/bookmarks), a very popular bookmark application for Nextcloud.
