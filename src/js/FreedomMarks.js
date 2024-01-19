@@ -3,7 +3,7 @@ debug = true;
 jQuery.support.cors = true;
 
 document.addEventListener("DOMContentLoaded", function(event) {
-  
+
     if(debug) console.log("DOM fully loaded and parsed");
 
     var sUsrAg = navigator.userAgent;
@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
         password = settings.password;
 
 
-        var b = document.getElementById("bookmarks_home_url"); 
+        var b = document.getElementById("bookmarks_home_url");
         b.setAttribute("href", settings.server_url + '/apps/bookmarks/');
 
         if(settings.bookmark_main_tab || !settings.search_main_tab) {
@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", function(event) {
     //Checks if the URL of the current tab is already saved on the server
     CurrentBrowserTab(fillForm);
     // TODO this must be put on hold because Nextcloud Bookmarks did not accept to add the "search" endpoint
-    // CurrentBrowserTab(searchForCurrentUrl); 
+    // CurrentBrowserTab(searchForCurrentUrl);
 
     // when a tab-pane gets activated ...
     $('a[data-toggle="tab"]').on('shown.bs.tab', function (e) {
@@ -135,11 +135,15 @@ document.addEventListener("DOMContentLoaded", function(event) {
 function testCorsEnabled(url){
     if(debug) console.log('function: ' + arguments.callee.name);
 
-    $.get( url, function( data, textStatus, request) {
-        var header = request.getResponseHeader('access-control-allow-origin');
+    const request = new Request(url, {
+        method: 'get'
+    });
+
+    fetch(request).then(response => {
+        const header = response.headers.get('access-control-allow-origin');
 
         if(typeof header !== 'undefined') {
-             console.log('CORS is not enabled for url: ' + url);
+            console.log('CORS is not enabled for url: ' + url);
         } else {
             console.log('CORS is enabled for url: ' + url);
             console.log(header);
@@ -274,43 +278,35 @@ function saveBookmark(browserTab){
     //var bookmarkurl = browserTab.url.trim().replace(/\/$/, "");
     if(debug) console.log('bookmarkurl: ' + bookmarkurl);
 
-    $.ajax({
-        url: endpoint,
-        method: "POST",
-        //basic authentication
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-        },
-        data: {
-            url: bookmarkurl,
-            title: $('#bookmark-title').val(),
-            description: $('#bookmark-description').val(),
-            item: {tags: getTagsArrayFromElement('bookmark-tags')},
-            is_public: true
-        },
-        dataType: 'json',
-    })
-    .success(function(result){
-        if (debug) console.log('success');
-        if (debug) console.log(result);
-        var bookmark = result.item;
-        if(bookmark.id){
-            $('#save-bookmark-button').hide();
-            $('#delete-bookmark-button').show();
-            $('#bookmark-id').val(bookmark.id);
-            addNotification('success','Saved');
-        } else {
-            addNotification('error','Not saved');
-        }
-    })
-    .error(function(XMLHttpRequest, status, errorThrown){
-        if(debug) {
-            console.log('ajax error');
-            console.log("Status: " + status);
-            console.log("Error: " + errorThrown);
-        }
-    });
+    const data = {
+        url: bookmarkurl,
+        title: $('#bookmark-title').val(),
+        description: $('#bookmark-description').val(),
+        item: {tags: getTagsArrayFromElement('bookmark-tags')},
+        is_public: true
+    };
 
+    apiRequest(endpoint, 'POST', data, username, password)
+        .then(result => {
+            if (debug) console.log('success');
+            if (debug) console.log(result);
+            var bookmark = result.item;
+            if(bookmark.id){
+                $('#save-bookmark-button').hide();
+                $('#delete-bookmark-button').show();
+                $('#bookmark-id').val(bookmark.id);
+                addNotification('success','Saved');
+            } else {
+                addNotification('error','Not saved');
+            }
+        })
+        .catch(error => {
+            if(debug) {
+                console.log('ajax error');
+                console.log("Status: " + error.status);
+                console.log("Error: " + error.statusText);
+            }
+        });
 }
 
 function searchByTermsOrTags(){
@@ -360,51 +356,35 @@ function searchBookmarks(endpoint, terms, tags, conjunction, page, listTag){
         var terms = [""];
     }
 
-    $.ajax({
-        url: endpoint,
-        method: "GET",
-        //basic authentication
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-        },
-        data: {
-            search: terms,
-            tags: tags,
-            conjunction: conjunction,
-            page: page,
-            limit: 30
-        },
-        dataType: 'json',
-    })
-    .success(function(result){
+    const data = {
+        search: terms,
+        tags: tags,
+        conjunction: conjunction,
+        page: page,
+        limit: 30
+    };
 
-        if(debug) console.log('success');
-        if(debug) console.log(result);
+    apiRequest(endpoint, 'GET', data, username, password)
+        .then(result => {
+            if(debug) console.log('success');
+            if(debug) console.log(result);
 
-        if(result.status == 'error'){
-            addNotification('Server Error',result.message);
-        } else {
-            var bookmarks = result.data;
-            if(debug) console.log(bookmarks);
-            makeBookmarksList(bookmarks, listTag);
-        }
-    })
-    .error(function(XMLHttpRequest, status, errorThrown){
-        if(debug) {
-            console.log('ajax error');
-            console.log("Status: " + status);
-            console.log("Error: " + errorThrown);
-        }
-    });
-    // .complete(function(jqXHR, textStatus){
-    //     if(debug) {
-    //         console.log('ajax completed');
-    //         console.log(jqXHR);
-    //         console.log(textStatus);
-    //     }
-    // });
+            if(result.status == 'error'){
+                addNotification('Server Error',result.message);
+            } else {
+                var bookmarks = result.data;
+                if(debug) console.log(bookmarks);
+                makeBookmarksList(bookmarks, listTag);
+            }
+        })
+        .catch(error => {
+            if(debug) {
+                console.log('ajax error');
+                console.log("Status: " + error.status);
+                console.log("Error: " + error.statusText);
+            }
+        });
 }
-
 
 function deleteBookmark(e, bookmarkId){
 
@@ -430,35 +410,25 @@ function deleteBookmark(e, bookmarkId){
         return false;
     }
 
-    var endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark/' + bookmarkId;
+    const endpoint = server_url + '/index.php/apps/bookmarks/public/rest/v2/bookmark/' + bookmarkId;
+    const data = { id: bookmarkId };
 
-    $.ajax({
-        method: "DELETE",
-        url: endpoint,
-        //basic authentication
-        beforeSend: function (xhr) {
-            xhr.setRequestHeader("Authorization", "Basic " + btoa(username + ":" + password));
-        },
-        data: {
-            id: bookmarkId
-        },
-        dataType: 'json'
-    })
-    .success(function(result){
-        $('#bookmark-' + bookmarkId).hide(); //this hides the deleted bookmark from the bookmark list
-        CurrentBrowserTab(fillForm);
-        $('#delete-bookmark-button').hide();
-        $('#save-bookmark-button').text("Add");
-        $('#save-bookmark-button').show();
-        addNotification('success','bookmark deleted');
-    })
-    .error(function(XMLHttpRequest, status, errorThrown){
-        if(debug) {
-            console.log('ajax error');
-            console.log("Status: " + status);
-            console.log("Error: " + errorThrown);
-        }
-    });
+    apiRequest(endpoint, 'DELETE', data, username, password)
+        .then(result => {
+            $('#bookmark-' + bookmarkId).hide(); //this hides the deleted bookmark from the bookmark list
+            CurrentBrowserTab(fillForm);
+            $('#delete-bookmark-button').hide();
+            $('#save-bookmark-button').text("Add");
+            $('#save-bookmark-button').show();
+            addNotification('success','bookmark deleted');
+        })
+        .catch(error => {
+            if(debug) {
+                console.log('ajax error');
+                console.log("Status: " + error.status);
+                console.log("Error: " + error.statusText);
+            }
+        });
 }
 
 // https://developer.mozilla.org/en-US/Add-ons/WebExtensions/API/notifications
